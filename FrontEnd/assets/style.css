@@ -52,6 +52,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	
 }
 header {
 	display: flex;
@@ -135,17 +136,18 @@ li:hover {
 	padding-bottom: 40px;
 }
 
-.category {
+.menu-categories li {
 	display: flex;
 	margin-right: 15px;
 	border:solid 1px #1D6154;
 	border-radius: 20px;
-	
+	color:#1D6154 ;
+	cursor: pointer;
 }
 
-.category:hover {
+.category_active {
 	background-color: #1D6154;
-	color: #fff;
+	color: #fff !important;
 }
 
 
@@ -214,3 +216,50 @@ footer nav ul {
 	margin: 2em
 }
 
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+a:hover{
+	color: #B1663C;
+}
+/******** log in *****/
+
+
+
+#login > * {
+	margin: auto;
+
+}
+#login h2{
+	margin-bottom: 20px;
+	text-align: center;
+}
+#login form {
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+	width: 30%;
+}
+
+#login input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#login label {
+	margin: 2em 0 1em 0;
+}
+#login textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+#login p {
+	font-size: 1.2em;
+	text-decoration: underline;
+	text-align: center;
+}

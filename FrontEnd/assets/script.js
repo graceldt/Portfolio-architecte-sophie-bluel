@@ -14,6 +14,9 @@ function createWork(works, work_filter="Tous") {
     if (work_filter !== "Tous") {
         works = works.filter(function (work) {
             return work.category.name === work_filter
+            
+            
+
         });
     }
 
@@ -40,9 +43,10 @@ function createWork(works, work_filter="Tous") {
 
 function createButton(works){
     const menu_category = document.querySelector('.menu-categories-list')
+    
     const categories = new Set() // init categories
-    categories.add("Tous")
-    let html = ''
+    
+    let html = `<li class="category category_active">Tous</li>`
     
     for (let index = 0; index < works.length; index++){
         const gallery = works[index] // get current work
@@ -50,10 +54,12 @@ function createButton(works){
     }
 
     for(const category of categories) {
-        html += `<li class='category'>${category}</li>`
+        html += `<li class="category">${category}</li>`
+        
     }
 
     menu_category.innerHTML = html
+    
 }
 
 
@@ -66,7 +72,17 @@ GetWorks().then(works => {
 
     console.log(works)
     const category_list = document.querySelector('.menu-categories-list')
-    category_list.addEventListener( "click", function(event){
+    
+    category_list.addEventListener("click", function(event){
+        
+        let current_li = event.target.closest("li")
+        if (current_li === null) return;
+
+        let element_select = document.querySelector('.menu-categories-list .category_active');
+        element_select.className=""
+        current_li.className = "category_active"
+        
         createWork(works, event.target.textContent)
     })
 })
+
