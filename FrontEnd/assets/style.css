@@ -52,6 +52,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	background-color: #FFFEF8;
 	
 }
 header {
@@ -99,6 +100,10 @@ nav li {
 li:hover {
 	color: #B1663C;
 }
+
+.hidden {
+	display: none;
+}
 #introduction {
 	display: flex;
 	align-items: center;
@@ -121,6 +126,16 @@ li:hover {
 
 #introduction p {
 	margin-bottom: 0.5em;
+}
+
+.modify {
+	display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+#modify_button {
+	margin-top: 10px;
+	cursor: pointer;
 }
 
 .menu-categories {
@@ -169,8 +184,9 @@ li:hover {
 }
 #contact {
 	width: 50%;
-margin: auto;
+	margin: auto;
 }
+
 #contact > * {
 	text-align: center;
 
@@ -216,15 +232,7 @@ footer nav ul {
 	margin: 2em
 }
 
-a {
-	text-decoration: none;
-	color: #000;
-}
-
-a:hover{
-	color: #B1663C;
-}
-/******** log in *****/
+/******** log in page *****/
 
 
 
@@ -262,4 +270,161 @@ a:hover{
 	font-size: 1.2em;
 	text-decoration: underline;
 	text-align: center;
+}
+
+.login_error {
+	text-align: center;
+	color: red;
+}
+
+.footer_login_page{
+	position: absolute;
+	right: 5%;
+	bottom: 0;
+}
+
+a {
+	text-decoration: none;
+	color: #000;
+}
+
+a:hover{
+	color: #B1663C;
+}
+
+/**** my modal ***/
+
+.modal {
+	display:none;
+	position: fixed; 
+	z-index: 1; 
+	left: 0;
+	top: 0;
+	width: 100%; 
+	height: 100%; 
+	background-color: rgb(0,0,0); 
+	background-color: rgba(0,0,0,0.4);
+}
+.modal-wrapper {
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px;
+	border: 1px solid #fff  ;
+	border-radius: 5px;
+	width: 500px;
+}
+
+.modal_header {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.action_modal {
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+	float: right;
+	font-size: 25px;
+	font-weight: bold;
+}
+
+.picture_gallery {
+	color: #000;
+	font-size: 18px;
+	text-align: center;
+	padding-top: -3%;
+}
+
+.add_picture {
+	font-family: 'Syne';
+	font-size: 10px;
+	color: #fff;
+	background-color: #1D6154;
+	margin : 2em auto ;
+	width: 40%;
+	height: 35px;
+	text-align: center;
+	border:solid 1px #1D6154;
+	border-radius: 20px;
+	
+}
+
+.add_picture_form {
+
+}
+
+.valid_button {
+	font-family: 'Syne';
+	font-size: 10px;
+	color: #fff;
+	background-color: #B3B3B3;
+	margin : 2em auto ;
+	width: 40%;
+	height: 35px;
+	text-align: center;
+	border:solid 1px #B3B3B3;
+	border-radius: 20px;
+}
+button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+hr {
+	color: #B3B3B3;
+}
+
+
+.modal #list-gallery-page .edit-list-image {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 5px;
+	padding: 40px 0px 40px 0px;
+}
+
+.image_to_edit {
+	width: 80px;
+}
+
+.image_container {
+	position: relative;
+}
+
+.icon_delete_image {
+	position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #000;
+    width: 25px;
+    height: 25px;
+    z-index: 99999;
+    border-radius: 3px;
+	cursor: pointer;
+}
+
+.icon_delete_image .fa-trash-can {
+	color:#fff; 
+	position: absolute; 
+	top: 5px;
+	right: 6px;
+}
+
+#list-gallery-page {
+	padding: 0px 40px 0px 40px;
+}
+
+
+.add_picture_form {
+	width: 80%;
+	height: 35px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+
+
+.fa-image {
+	color: #b9babb;
 }

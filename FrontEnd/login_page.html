@@ -9,7 +9,8 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
-	<script src="./assets/script.js" defer></script>
+	<script src="./assets/login.js" defer></script>
+	<script src="./assets/common.js" defer></script>
 </head>
 <body>
 <header>
@@ -18,7 +19,8 @@
 		<ul>
 			<li>projets</li>
 			<li>contact</li>
-			<li>login</li>
+			<li id="login">login</li>
+			<li id="logout" class="hidden">logout</li>
 			<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 		</ul>
 	</nav>
@@ -27,18 +29,18 @@
     <section id="login">
         <form action="#">
             <h2>Log in </h2>
+			<span class="hidden login_error">Erreur dans l’identifiant ou le mot de passe</span>
             <label for="email">E-mail</label>
-            <input type="email" placeholder="">
+            <input id="email" type="email" placeholder="">
             <label for="password">Mot de passe</label>
-            <input  type="password" placeholder="">
+            <input id="password" type="password" placeholder="">
             <input type="submit" value="Se connecter">
             <p class="forgot_password">Mot de passe oublié</p>
         </form>
     </section>
     
 </main>
-
-<footer>
+<footer class="footer_login_page">
 	<nav>
 		<ul>
 			<li>Mentions Légales</li>
