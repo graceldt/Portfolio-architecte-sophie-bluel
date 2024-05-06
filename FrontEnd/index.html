@@ -62,7 +62,7 @@
 		<aside id="mymodal" class="modal">
 			<div class="modal-wrapper">
 				<div class="modal_header">
-					<span class="action_modal hidden" id="modal-preview">&larr;</span>
+					<span  class="action_modal"><i id="modal-preview" class="fa-solid fa-arrow-left hidden"></i></span>
 					<span class="action_modal" id="close-modal">&times;</span>
 				</div>
 				<div id="list-gallery-page">
@@ -71,21 +71,26 @@
 					<hr>
 					<button class="add_picture" id="add-picture">Ajouter une photo</button>
 				</div>
+
 				<div id="add-gallery-page" class="hidden">
 					<p class="picture_gallery">Ajout photo</p>
-					<span class="test">
-						<i class="fa-regular fa-image fa-2xl"></i>
-						<button>+ Ajouter une photo</button>
-						<p>jpg, png : 4mo max</p>
-					</span>
-					<label for="title">Titre</label>
-					<input id="picture_title" class="add_picture_form" type="text" placeholder="">
-					<label for="categories">Catégorie</label>
-					<select name="categories" id="category_option" class="add_picture_form"></select>
+					
+					<form action="" class="form_add_picture">
+						<label for="images" class="input_file">
+							<i class="fa-regular fa-image"></i>
+							<span>+ Ajouter une photo</span>
+							<input type="file" id="images" accept="image/jpg, image/png"/>
+							<p>jpg, png : 4mo max</p>
+						</label>
+
+						<label id="title"  for="title" class="form_label">Titre</label>
+						<input id="picture_title" class="add_picture_form" type="text" placeholder="">
+						<label id="category" for="categories" class="form_label">Catégorie</label>
+						<select name="categories" id="category_option" class="add_picture_form"></select>
+					</form>
 					<hr>
 					<button class="valid_button">Valider</button>
 				</div>
-
 			</div>
 
 		</aside>
