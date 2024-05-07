@@ -29,7 +29,7 @@ form.addEventListener("submit", (Event) => {
         return response.json()
     })
     .then((data) => {
-        localStorage.setItem("user", data.token)
+        sessionStorage.setItem("user", data.token)
         return window.location.href="index.html"
     }).catch((error) => {
         console.log(error)

@@ -1,5 +1,5 @@
 function changeUserConnection() {
-    const user = localStorage.getItem("user")
+    const user = sessionStorage.getItem("user")
     const login = document.getElementById("login")
     const logout = document.getElementById("logout")
     const buttonModify = document.getElementById("modify_button")
@@ -24,9 +24,9 @@ function changeUserConnection() {
 function userLogOut() {
     const logout = document.getElementById("logout")
     logout.addEventListener("click", function (){
-        localStorage.removeItem("user", null)
+        sessionStorage.removeItem("user", null)
         changeUserConnection()
-        return window.location.href="index.html"
+        return window.location.href="login_page.html"
     })
 }
 
