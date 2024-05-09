@@ -80,6 +80,7 @@ displayWorks()
 
 GetCategories().then(categories => {
     createButton(categories)
+    createOption(categories)
 })
 
 

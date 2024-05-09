@@ -481,7 +481,19 @@ input[type=file] {
 	margin: 6px 0px 15px 0px;
 }
 
+.new_picture{
+	position: absolute;
+	z-index: 999;
+	height: 100%;
+	width: 40%;
+}
 
+.img_container{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+} 
 
 
 

@@ -78,10 +78,13 @@
 					
 					<form action="" class="form_add_picture">
 						<label for="images" class="input_file">
-							<i class="fa-regular fa-image"></i>
-							<span>+ Ajouter une photo</span>
-							<input type="file" id="images" accept="image/jpg, image/png"/>
-							<p>jpg, png : 4mo max</p>
+							<div class="img_container">
+								<i class="fa-regular fa-image"></i>
+								<span>+ Ajouter une photo</span>
+								<input type="file" id="images" accept="image/jpeg, image/png"/>
+								<p>jpg, png : 4mo max</p>	
+							</div>
+							<img src="" class="new_picture hidden">
 						</label>
 
 						<label id="title"  for="title" class="form_label">Titre</label>

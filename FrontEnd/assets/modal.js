@@ -77,7 +77,58 @@ function listGalleryToEdit(works){
     })
 }
 
+function createOption(categories){
+    const select_category_list = document.getElementById("category_option")
 
+    const select_option = document.createElement('option')
+    select_option.innerHTML = ""
+    select_category_list.appendChild(select_option)
+
+    categories.forEach(category =>{
+        const select_option = document.createElement('option')
+        select_option.value = category.id
+        select_option.innerHTML = category.name
+
+        select_category_list.appendChild(select_option)
+    })
+}
+
+const inputPicture = document.getElementById('images')
+
+
+
+inputPicture.addEventListener("change", () => {
+    const img_container = document.querySelector('.img_container')
+    const new_picture = document.querySelector('.new_picture')
+    const file = inputPicture.files[0]
+    if (!file)return
+
+    // Generate img preview 
+
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = ()=> {
+        new_picture.src = reader.result
+        img_container.classList.add('hidden')
+        new_picture.classList.remove('hidden')
+    }
+
+    // Reset image input
+    inputPicture.value = "";
+    return;
+});
+
+
+
+/*fetch("http://localhost:5678/api/works", {
+    method : "POST",
+    headers : {
+                "Content-type": "application/json",
+                "accept": "application/json",
+                'Authorization': 'Bearer '
+                },
+    body: JSON.stringify(data)
+})*/
 
 
 manage_modal()
