@@ -277,6 +277,10 @@ footer nav ul {
 	color: red;
 }
 
+.form_validation {
+	text-align: center;
+	color: #1D6154;
+}
 .footer_login_page{
 	position: absolute;
 	right: 5%;

@@ -26,6 +26,12 @@ function manage_modal(){
         modal.setAttribute("style","display:none");
     })
 
+    window.addEventListener("click", function(event){
+        if (event.target === modal){
+            modal.setAttribute("style","display:none");
+        }
+    })
+
     preview.addEventListener("click", function(event){
         event.preventDefault()
         list_gallery_page.classList.remove('hidden')
@@ -109,12 +115,13 @@ inputPicture.addEventListener("change", () => {
         new_picture.src = reader.result
         img_container.classList.add('hidden')
         new_picture.classList.remove('hidden')
-    }
-});
+        }
+    })
 
 
+
+function validForm (){
 const formAddPicture = document.querySelector('.valid_button')
-
 formAddPicture.addEventListener("click", () =>{
 
     const picture = document.querySelector('.new_picture')
@@ -123,6 +130,7 @@ formAddPicture.addEventListener("click", () =>{
     const title = title_picture.value
     const category_work = document.getElementById("category_option")
     const category = category_work.value
+    const form_validation = document.querySelector(".form_validation")
 
     console.log(title, ' ', category, ' ', image)
 
@@ -145,6 +153,8 @@ formAddPicture.addEventListener("click", () =>{
             const form_error = document.querySelector(".login_error")
             form_error.classList.remove("hidden")
             throw new Error(response.status);
+        } else {
+                form_validation.classList.remove("hidden")
         }
         return response.json()
     }).catch((error)=> {
@@ -152,7 +162,10 @@ formAddPicture.addEventListener("click", () =>{
     })
 
 })
+}
+
 
 
 
 manage_modal()
+validForm ()
