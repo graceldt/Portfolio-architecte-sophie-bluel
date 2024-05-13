@@ -119,16 +119,48 @@ inputPicture.addEventListener("change", () => {
 });
 
 
+const formAddPicture = document.querySelector('.valid_button')
 
-/*fetch("http://localhost:5678/api/works", {
-    method : "POST",
-    headers : {
-                "Content-type": "application/json",
-                "accept": "application/json",
-                'Authorization': 'Bearer '
-                },
-    body: JSON.stringify(data)
-})*/
+formAddPicture.addEventListener("click", () =>{
+    console.log("ICI")
+
+    const picture = document.querySelector('.new_picture')
+    const image = picture.src
+    const title_picture = document.getElementById("picture_title")
+    const title = title_picture.value
+    const category_work = document.getElementById("category_option")
+    const category = category_work.value
+
+    console.log(title, ' ', category, ' ', image)
+
+    fetch("http://localhost:5678/api/works", {
+        method : "POST",
+        headers : {
+                    "Content-type": "application/json",
+                    "accept": "application/json",
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": "Bearer " + sessionStorage.getItem("user")
+                    },
+        body : JSON.stringify({
+                "title": title,
+                "category": category,
+                "image": image,
+
+                }),
+    })
+    .then((response) => {
+        if ([400, 401, 500].includes(response.status)) {
+            const form_error = document.querySelector(".login_error")
+            form_error.classList.remove("hidden")
+            throw new Error(response.status);
+        }
+        return response.json()
+    }).catch((error)=> {
+        console.log(error)
+    })
+
+})
+
 
 
 manage_modal()
