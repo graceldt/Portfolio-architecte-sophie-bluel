@@ -41,18 +41,20 @@ function manage_modal(){
     })
 }
 
+function CreateImageContainer(work, gallery_div){
+    gallery_div.innerHTML += `<div class="image_container">
+                <img class="image_to_edit" src="${work.imageUrl}"/>
+                <div class="icon_delete_image" data-id="${work.id}" data-name="${work.title}">
+                    <i class="fa-regular fa-trash-can"></i>
+                </div>
+            </div>`
+}
+
 function listGalleryToEdit(works){
     const gallery_div = document.querySelector(".edit-list-image")
-    let html = ''
-    works.forEach(work => {
-        html += `<div class="image_container">
-                    <img class="image_to_edit" src="${work.imageUrl}"/>
-                    <div class="icon_delete_image" data-id="${work.id}" data-name="${work.title}">
-                        <i class="fa-regular fa-trash-can"></i>
-                    </div>
-                </div>`
-    });
-    gallery_div.innerHTML = html
+    gallery_div.innerHTML = ''
+    works.forEach((work) => CreateImageContainer(work, gallery_div))
+    
 
     const listTrash = document.querySelectorAll('.icon_delete_image')
 
@@ -131,8 +133,7 @@ formAddPicture.addEventListener("click", () =>{
     const category_work = document.getElementById("category_option")
     const category = category_work.value
     const form_validation = document.querySelector(".form_validation")
-
-    console.log(title, ' ', category, ' ', image)
+    const form_error = document.querySelector(".login_error")
 
     const formData  = new FormData();
     formData.append("title", title)
@@ -150,21 +151,29 @@ formAddPicture.addEventListener("click", () =>{
     })
     .then((response) => {
         if ([400, 401, 500].includes(response.status)) {
-            const form_error = document.querySelector(".login_error")
-            form_error.classList.remove("hidden")
             throw new Error(response.status);
-        } else {
-                form_validation.classList.remove("hidden")
-        }
+        } 
+                
         return response.json()
-    }).catch((error)=> {
-        console.log(error)
-    })
+    }).then((data) => {
+        console.log(data)
+        const gallery_div = document.querySelector(".gallery")
+        CreateFigure(gallery_div, data)
 
+        const gallery_list = document.querySelector(".edit-list-image")
+        CreateImageContainer(data, gallery_list)
+
+        form_validation.classList.remove("hidden")
+        form_error.classList.add("hidden")
+    })
+    .catch((error)=> {
+        console.log(error)
+        form_error.classList.remove("hidden")
+        form_validation.classList.add("hidden")
+    })
+    
 })
 }
-
-
 
 
 manage_modal()

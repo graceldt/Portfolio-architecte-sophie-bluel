@@ -16,24 +16,30 @@ function createWork(works, work_filter="Tous") {
         });
     }
 
+
+
     // for each works
     for (let index = 0; index < works.length; index++){
         const gallery = works[index] // get current work
 
-        // create figure and add to the gallery parent item
-        const figure_img = document.createElement('figure') 
-        gallery_div.appendChild(figure_img)
-
-        // add img to figure parent item
-        const imageElement = document.createElement('img')
-        figure_img.appendChild(imageElement)
-        imageElement.src = gallery.imageUrl
-        
-        // add title to the figure parent item
-        const captionElement = document.createElement('figcaption')
-        captionElement.innerText = gallery.title
-        figure_img.appendChild(captionElement)
+        CreateFigure(gallery_div, gallery)
     }
+}
+
+function CreateFigure(gallery_div, gallery){
+    // create figure and add to the gallery parent item
+    const figure_img = document.createElement('figure') 
+    gallery_div.appendChild(figure_img)
+
+    // add img to figure parent item
+    const imageElement = document.createElement('img')
+    figure_img.appendChild(imageElement)
+    imageElement.src = gallery.imageUrl
+    
+    // add title to the figure parent item
+    const captionElement = document.createElement('figcaption')
+    captionElement.innerText = gallery.title
+    figure_img.appendChild(captionElement)
 }
 
 async function GetCategories() {
