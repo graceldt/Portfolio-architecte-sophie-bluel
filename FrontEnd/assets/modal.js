@@ -95,8 +95,6 @@ function createOption(categories){
 
 const inputPicture = document.getElementById('images')
 
-
-
 inputPicture.addEventListener("change", () => {
     const img_container = document.querySelector('.img_container')
     const new_picture = document.querySelector('.new_picture')
@@ -112,17 +110,12 @@ inputPicture.addEventListener("change", () => {
         img_container.classList.add('hidden')
         new_picture.classList.remove('hidden')
     }
-
-    // Reset image input
-    inputPicture.value = "";
-    return;
 });
 
 
 const formAddPicture = document.querySelector('.valid_button')
 
 formAddPicture.addEventListener("click", () =>{
-    console.log("ICI")
 
     const picture = document.querySelector('.new_picture')
     const image = picture.src
@@ -133,20 +126,19 @@ formAddPicture.addEventListener("click", () =>{
 
     console.log(title, ' ', category, ' ', image)
 
+    const formData  = new FormData();
+    formData.append("title", title)
+    formData.append("category", category)
+    formData.append("image", inputPicture.files[0])
+
     fetch("http://localhost:5678/api/works", {
         method : "POST",
         headers : {
-                    "Content-type": "application/json",
                     "accept": "application/json",
-                    "Content-Type": "multipart/form-data",
+                    //"Content-Type": "multipart/form-data",
                     "Authorization": "Bearer " + sessionStorage.getItem("user")
                     },
-        body : JSON.stringify({
-                "title": title,
-                "category": category,
-                "image": image,
-
-                }),
+        body : formData
     })
     .then((response) => {
         if ([400, 401, 500].includes(response.status)) {
