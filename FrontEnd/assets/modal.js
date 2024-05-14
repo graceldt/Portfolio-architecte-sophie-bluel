@@ -41,30 +41,32 @@ function manage_modal(){
     })
 }
 
-function CreateImageContainer(work, gallery_div){
-    gallery_div.innerHTML += `<div class="image_container">
-                <img class="image_to_edit" src="${work.imageUrl}"/>
-                <div class="icon_delete_image" data-id="${work.id}" data-name="${work.title}">
-                    <i class="fa-regular fa-trash-can"></i>
-                </div>
-            </div>`
-}
+function workToEdit(work, gallery_div){
+    const imgContainer = document.createElement('div')
+        gallery_div.appendChild(imgContainer)
+        imgContainer.className='image_container'
 
-function listGalleryToEdit(works){
-    const gallery_div = document.querySelector(".edit-list-image")
-    gallery_div.innerHTML = ''
-    works.forEach((work) => CreateImageContainer(work, gallery_div))
-    
+        //img 
+        const imgEdit = document.createElement('img')
+        imgContainer.appendChild(imgEdit)
+        imgEdit.className='image_to_edit'
+        imgEdit.src=work.imageUrl
 
-    const listTrash = document.querySelectorAll('.icon_delete_image')
+        //delete 
+        const deleteContent = document.createElement('div')
+        imgContainer.appendChild(deleteContent)
+        deleteContent.className='icon_delete_image'
 
-    listTrash.forEach(tr => {
-        const idWork = tr.getAttribute('data-id')
-        const titleWork = tr.getAttribute('data-name')
+        // trash icon
+        const trashIcon = document.createElement('i')
+        deleteContent.appendChild(trashIcon)
+        trashIcon.className='fa-regular fa-trash-can'
+        trashIcon.setAttribute('data-id', work.id )
+        trashIcon.setAttribute('data-name', work.title )
 
-        tr.addEventListener('click', ()=>{
-            if(confirm(`L'élement "${titleWork}" va être définitivement supprimé`)){
-                fetch("http://localhost:5678/api/works/"+ idWork, {
+        deleteContent.addEventListener('click', ()=> {
+            if(confirm(`L'élement "${work.title}" va être définitivement supprimé`)){
+                fetch("http://localhost:5678/api/works/"+ work.id, {
                     method : "DELETE",
                     headers : {
                     "Content-type": "application/json",
@@ -81,8 +83,17 @@ function listGalleryToEdit(works){
                 })
             }
         })
-        
-    })
+}
+
+
+function GalleryToEdit(works){
+    const gallery_div = document.querySelector(".edit-list-image")
+    gallery_div.innerHTML = ''
+
+    for (let index = 0; index < works.length; index++){
+        const gallery = works[index] // get current work
+        workToEdit(gallery, gallery_div)
+    }
 }
 
 function createOption(categories){
@@ -161,20 +172,50 @@ formAddPicture.addEventListener("click", () =>{
         CreateFigure(gallery_div, data)
 
         const gallery_list = document.querySelector(".edit-list-image")
-        CreateImageContainer(data, gallery_list)
+        workToEdit(data, gallery_list)
 
         form_validation.classList.remove("hidden")
         form_error.classList.add("hidden")
     })
     .catch((error)=> {
         console.log(error)
-        form_error.classList.remove("hidden")
-        form_validation.classList.add("hidden")
+        if (error === 401) {
+            alert("vous n'êtes plus connecté")
+        } else {
+            form_error.classList.remove("hidden")
+            form_validation.classList.add("hidden")
+        }
+        
     })
     
 })
 }
 
+function FormValidation(){
+    const formAddPicture = document.querySelector('.valid_button')
+    const title_picture = document.getElementById("picture_title")
+    const select_category_list = document.getElementById("category_option")
+
+    const checkForm = () => {
+        if (title_picture.value != "" && select_category_list.value !="" && inputPicture.files.length != 0){
+            formAddPicture.style.backgroundColor="#1D6154";
+        }
+        else {
+            formAddPicture.style.backgroundColor="#B3B3B3";
+        }
+    }
+    
+    title_picture.addEventListener('keyup', () => {
+        checkForm()
+    })
+    select_category_list.addEventListener('change', () => {
+        checkForm()
+    })
+    inputPicture.addEventListener('change', () => {
+        checkForm()
+    })
+}
 
 manage_modal()
-validForm ()
+validForm()
+FormValidation()

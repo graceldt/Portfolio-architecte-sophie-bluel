@@ -16,12 +16,9 @@ function createWork(works, work_filter="Tous") {
         });
     }
 
-
-
     // for each works
     for (let index = 0; index < works.length; index++){
         const gallery = works[index] // get current work
-
         CreateFigure(gallery_div, gallery)
     }
 }
@@ -77,7 +74,7 @@ const displayWorks = () =>{
             createWork(works, event.target.textContent)
         })
     
-        listGalleryToEdit(works)
+        GalleryToEdit(works)
     })
 }
 

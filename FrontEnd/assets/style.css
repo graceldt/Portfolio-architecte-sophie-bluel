@@ -369,9 +369,6 @@ a:hover{
 	border-radius: 20px;
 }
 
-.valid_button:active {
-	background-color: #1D6154;
-}
 
 .modal button {
 	display: flex;
