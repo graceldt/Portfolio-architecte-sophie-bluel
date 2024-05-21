@@ -1,4 +1,12 @@
 function manage_modal(){
+    /*
+        Cette fonction permet l'affichage de la vue ajout photo 
+        de la modale lors du clique sur le bouton ajouter photo et
+        cacher la vue galerie photo.
+        Elle permet également d'ouvrir, fermer la modale en cliquant 
+        sur la croix et en dehors de la modale également 
+        retourner sur la vue précédente lors du clic.
+    */
     const modal = document.getElementById("mymodal")
     const modal_header = document.querySelector(".modal_header")
     const open = document.getElementById("modify_button")
@@ -41,23 +49,27 @@ function manage_modal(){
     })
 }
 
-function workToEdit(work, gallery_div){
+function workGallery(work, gallery_div){
+    /*
+    Cette fonction permet de créer les éléments de la galerie photo de la modale 
+    et de pouvoir supprimer les travaux du portfolio lors du clic sur le bouton corbeille.
+     */
     const imgContainer = document.createElement('div')
         gallery_div.appendChild(imgContainer)
         imgContainer.className='image_container'
 
-        //img 
+        //image 
         const imgEdit = document.createElement('img')
         imgContainer.appendChild(imgEdit)
         imgEdit.className='image_to_edit'
         imgEdit.src=work.imageUrl
 
-        //delete 
+        //supprimer 
         const deleteContent = document.createElement('div')
         imgContainer.appendChild(deleteContent)
         deleteContent.className='icon_delete_image'
 
-        // trash icon
+        // icone corbeille 
         const trashIcon = document.createElement('i')
         deleteContent.appendChild(trashIcon)
         trashIcon.className='fa-regular fa-trash-can'
@@ -87,16 +99,24 @@ function workToEdit(work, gallery_div){
 
 
 function GalleryToEdit(works){
+    /*
+    Cette fonction permet d'afficher l'ensemble de la liste des images
+    de la galerie photo de la modale 
+    */
     const gallery_div = document.querySelector(".edit-list-image")
     gallery_div.innerHTML = ''
 
     for (let index = 0; index < works.length; index++){
-        const gallery = works[index] // get current work
-        workToEdit(gallery, gallery_div)
+        const gallery = works[index]
+        workGallery(gallery, gallery_div)
     }
 }
 
 function createOption(categories){
+    /*
+    Cette fonction permet d'ajouter dans le formulaire d'ajout photo, 
+    les options de catégories 
+     */
     const select_category_list = document.getElementById("category_option")
 
     const select_option = document.createElement('option')
@@ -112,15 +132,18 @@ function createOption(categories){
     })
 }
 
+
 const inputPicture = document.getElementById('images')
 
-inputPicture.addEventListener("change", () => {
+function add_picture() {
+    // ajout de l'image dans le formulaire 
+    inputPicture.addEventListener("change", () => {
     const img_container = document.querySelector('.img_container')
     const new_picture = document.querySelector('.new_picture')
     const file = inputPicture.files[0]
     if (!file)return
 
-    // Generate img preview 
+    // aperçu de l'image 
 
     const reader = new FileReader()
     reader.readAsDataURL(file)
@@ -130,68 +153,68 @@ inputPicture.addEventListener("change", () => {
         new_picture.classList.remove('hidden')
         }
     })
+}
+
 
 
 
 function validForm (){
-const formAddPicture = document.querySelector('.valid_button')
-formAddPicture.addEventListener("click", () =>{
+    const formAddPicture = document.querySelector('.valid_button')
+    formAddPicture.addEventListener("click", () =>{
 
-    const picture = document.querySelector('.new_picture')
-    const image = picture.src
-    const title_picture = document.getElementById("picture_title")
-    const title = title_picture.value
-    const category_work = document.getElementById("category_option")
-    const category = category_work.value
-    const form_validation = document.querySelector(".form_validation")
-    const form_error = document.querySelector(".login_error")
+        const picture = document.querySelector('.new_picture')
+        const image = picture.src
+        const title_picture = document.getElementById("picture_title")
+        const title = title_picture.value
+        const category_work = document.getElementById("category_option")
+        const category = category_work.value
+        const form_validation = document.querySelector(".form_validation")
+        const form_error = document.querySelector(".login_error")
 
-    const formData  = new FormData();
-    formData.append("title", title)
-    formData.append("category", category)
-    formData.append("image", inputPicture.files[0])
+        const formData  = new FormData();
+        formData.append("title", title)
+        formData.append("category", category)
+        formData.append("image", inputPicture.files[0])
 
-    fetch("http://localhost:5678/api/works", {
-        method : "POST",
-        headers : {
-                    "accept": "application/json",
-                    //"Content-Type": "multipart/form-data",
-                    "Authorization": "Bearer " + sessionStorage.getItem("user")
-                    },
-        body : formData
-    })
-    .then((response) => {
-        if ([400, 401, 500].includes(response.status)) {
-            throw new Error(response.status);
-        } 
-                
-        return response.json()
-    }).then((data) => {
-        console.log(data)
-        const gallery_div = document.querySelector(".gallery")
-        CreateFigure(gallery_div, data)
+        fetch("http://localhost:5678/api/works", {
+            method : "POST",
+            headers : {
+                "accept": "application/json",
+                "Authorization": "Bearer " + sessionStorage.getItem("user")
+            },
+            body: formData
+        }).then((response) => {
+            if(response.status === 401) {
+                alert("vous n'êtes plus connecté")
+                sessionStorage.removeItem("user") //supression session storage 
+                return window.location.href="login_page.html" //redirection vers la page de login return window.location.href="login_page.html"
+            }
+            else if ([400, 500].includes(response.status)) {
+                throw new Error(response.status);
+            } 
+            return response.json()
+        }).then((data) => {
+            const gallery_div = document.querySelector(".gallery")
+            CreateFigure(gallery_div, data)
 
-        const gallery_list = document.querySelector(".edit-list-image")
-        workToEdit(data, gallery_list)
+            const gallery_list = document.querySelector(".edit-list-image")
+            workGallery(data, gallery_list)
 
-        form_validation.classList.remove("hidden")
-        form_error.classList.add("hidden")
-    })
-    .catch((error)=> {
-        console.log(error)
-        if (error === 401) {
-            alert("vous n'êtes plus connecté")
-        } else {
+            form_validation.classList.remove("hidden")
+            form_error.classList.add("hidden")
+        }).catch((error)=> {
             form_error.classList.remove("hidden")
             form_validation.classList.add("hidden")
-        }
+        })
         
     })
-    
-})
 }
 
-function FormValidation(){
+function Validbutton(){
+    /*
+    Cette fonction permet le changement de la couleur du bouton de validation
+    du formulaire lorsque l'ensemble des champs ont bien été complétés
+     */
     const formAddPicture = document.querySelector('.valid_button')
     const title_picture = document.getElementById("picture_title")
     const select_category_list = document.getElementById("category_option")
@@ -216,6 +239,7 @@ function FormValidation(){
     })
 }
 
+add_picture()
 manage_modal()
 validForm()
-FormValidation()
+Validbutton()

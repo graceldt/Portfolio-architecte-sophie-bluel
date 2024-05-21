@@ -285,6 +285,8 @@ footer nav ul {
 	position: absolute;
 	right: 5%;
 	bottom: 0;
+	background-color: #fff;
+	width: 100%;
 }
 
 a {

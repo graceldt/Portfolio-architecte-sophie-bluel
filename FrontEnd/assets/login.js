@@ -1,5 +1,10 @@
 const form = document.querySelector('form')
-
+/*
+        Cette fonction permet de gérer le formulaire de connexion , 
+        la redirection vers la page d'accueil quand la connexion est
+        confirmée, d'afficher un message d'erreur quand les informations 
+        mot de passe et adresse mail sont incorrectes.
+    */
 
 form.addEventListener("submit", (Event) => {
     Event.preventDefault()
