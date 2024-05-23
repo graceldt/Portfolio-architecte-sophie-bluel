@@ -19,10 +19,13 @@
 
 <body>
 	<header>
+		<span id="edit_mode" class="hidden">
+			<i class="fa-regular fa-pen-to-square"></i> Mode édition
+		</span>
 		<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 		<nav>
 			<ul>
-				<li>projets</li>
+				<li><a href="index.html">projets</a></li>
 				<li>contact</li>
 				<li id="login"> <a href="login_page.html">login</a></li>
 				<li id="logout" class="hidden">logout</li>
@@ -76,9 +79,8 @@
 				<div id="add-gallery-page" class="hidden">
 					<p class="picture_gallery">Ajout photo</p>
 					
-					<form action="" class="form_add_picture">
+					<form action="#" class="form_add_picture">
 						<p class="hidden login_error" > Tous les champs sont obligatoires</p><br>
-						<p class="hidden form_validation" > Photo ajoutée </p><br>
 						<label for="images" class="input_file">
 							<div class="img_container">
 								<i class="fa-regular fa-image"></i>

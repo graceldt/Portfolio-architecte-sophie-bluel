@@ -1,3 +1,15 @@
+function show_list_gallery() {
+    const preview = document.getElementById("modal-preview")
+    const modal_header = document.querySelector(".modal_header")
+    const list_gallery_page = document.getElementById("list-gallery-page")
+    const add_gallery_page = document.getElementById("add-gallery-page")
+
+    list_gallery_page.classList.remove('hidden')
+    add_gallery_page.classList.add('hidden')
+    preview.classList.add('hidden')
+    modal_header.setAttribute("style", "justify-content:flex-end")
+}
+
 function manage_modal(){
     /*
         Cette fonction permet l'affichage de la vue ajout photo 
@@ -41,7 +53,6 @@ function manage_modal(){
     })
 
     preview.addEventListener("click", function(event){
-        event.preventDefault()
         list_gallery_page.classList.remove('hidden')
         add_gallery_page.classList.add('hidden')
         preview.classList.add('hidden')
@@ -51,54 +62,53 @@ function manage_modal(){
 
 function workGallery(work, gallery_div){
     /*
-    Cette fonction permet de créer les éléments de la galerie photo de la modale 
+    Cette fonction permet de créer un élément de la galerie photo de la modale 
     et de pouvoir supprimer les travaux du portfolio lors du clic sur le bouton corbeille.
      */
     const imgContainer = document.createElement('div')
-        gallery_div.appendChild(imgContainer)
-        imgContainer.className='image_container'
+    gallery_div.appendChild(imgContainer)
+    imgContainer.className='image_container'
 
-        //image 
-        const imgEdit = document.createElement('img')
-        imgContainer.appendChild(imgEdit)
-        imgEdit.className='image_to_edit'
-        imgEdit.src=work.imageUrl
+    //image 
+    const imgEdit = document.createElement('img')
+    imgContainer.appendChild(imgEdit)
+    imgEdit.className='image_to_edit'
+    imgEdit.src=work.imageUrl
 
-        //supprimer 
-        const deleteContent = document.createElement('div')
-        imgContainer.appendChild(deleteContent)
-        deleteContent.className='icon_delete_image'
+    //supprimer 
+    const deleteContent = document.createElement('div')
+    imgContainer.appendChild(deleteContent)
+    deleteContent.className='icon_delete_image'
 
-        // icone corbeille 
-        const trashIcon = document.createElement('i')
-        deleteContent.appendChild(trashIcon)
-        trashIcon.className='fa-regular fa-trash-can'
-        trashIcon.setAttribute('data-id', work.id )
-        trashIcon.setAttribute('data-name', work.title )
+    // icone corbeille 
+    const trashIcon = document.createElement('i')
+    deleteContent.appendChild(trashIcon)
+    trashIcon.className='fa-regular fa-trash-can'
+    trashIcon.setAttribute('data-id', work.id )
+    trashIcon.setAttribute('data-name', work.title )
 
-        deleteContent.addEventListener('click', ()=> {
-            if(confirm(`L'élement "${work.title}" va être définitivement supprimé`)){
-                fetch("http://localhost:5678/api/works/"+ work.id, {
-                    method : "DELETE",
-                    headers : {
-                    "Content-type": "application/json",
-                    "accept": "application/json",
-                    'Authorization': 'Bearer ' + sessionStorage.getItem("user")
-                    },
-                    
-                })
-                .then((response)=> {
-                    if ([401, 500].includes(response.status)) {
-                        throw new Error(response.status);
-                    }
-                    displayWorks()
-                })
-            }
-        })
+    deleteContent.addEventListener('click', ()=> {
+        if(confirm(`L'élement "${work.title}" va être définitivement supprimé`)){
+            fetch("http://localhost:5678/api/works/"+ work.id, {
+                method : "DELETE",
+                headers : {
+                "Content-type": "application/json",
+                "accept": "application/json",
+                'Authorization': 'Bearer ' + sessionStorage.getItem("user")
+                },
+            })
+            .then((response)=> {
+                if ([401, 500].includes(response.status)) {
+                    throw new Error(response.status);
+                }
+                display_works()
+            })
+        }
+    })
 }
 
 
-function GalleryToEdit(works){
+function modal_gallery(works){
     /*
     Cette fonction permet d'afficher l'ensemble de la liste des images
     de la galerie photo de la modale 
@@ -112,13 +122,13 @@ function GalleryToEdit(works){
     }
 }
 
-function createOption(categories){
+function create_form_option(categories){
     /*
     Cette fonction permet d'ajouter dans le formulaire d'ajout photo, 
     les options de catégories 
      */
     const select_category_list = document.getElementById("category_option")
-
+    select_category_list.innerHTML = ""
     const select_option = document.createElement('option')
     select_option.innerHTML = ""
     select_category_list.appendChild(select_option)
@@ -159,16 +169,17 @@ function add_picture() {
 
 
 function validForm (){
+    /*
+    Cette fonction permet l'ajout d'un nouveau projet dans 
+    le portfolio et dans la liste des images de la modale 
+    lors de la validation du formulaire d'ajout photo 
+     */
     const formAddPicture = document.querySelector('.valid_button')
     formAddPicture.addEventListener("click", () =>{
-
-        const picture = document.querySelector('.new_picture')
-        const image = picture.src
         const title_picture = document.getElementById("picture_title")
         const title = title_picture.value
         const category_work = document.getElementById("category_option")
         const category = category_work.value
-        const form_validation = document.querySelector(".form_validation")
         const form_error = document.querySelector(".login_error")
 
         const formData  = new FormData();
@@ -184,29 +195,29 @@ function validForm (){
             },
             body: formData
         }).then((response) => {
-            if(response.status === 401) {
-                alert("vous n'êtes plus connecté")
-                sessionStorage.removeItem("user") //supression session storage 
-                return window.location.href="login_page.html" //redirection vers la page de login return window.location.href="login_page.html"
-            }
-            else if ([400, 500].includes(response.status)) {
+            if ([400, 401, 500].includes(response.status)) {
                 throw new Error(response.status);
-            } 
+            }
             return response.json()
         }).then((data) => {
             const gallery_div = document.querySelector(".gallery")
-            CreateFigure(gallery_div, data)
+            create_figure(gallery_div, data)
 
             const gallery_list = document.querySelector(".edit-list-image")
             workGallery(data, gallery_list)
-
-            form_validation.classList.remove("hidden")
+            
             form_error.classList.add("hidden")
+            
+            // réinitialisation du formulaire 
+            document.querySelector(".form_add_picture").reset();
+            const new_picture = document.querySelector('.new_picture')
+            new_picture.src = ''
+            new_picture.classList.add("hidden")
+            show_list_gallery()
+
         }).catch((error)=> {
             form_error.classList.remove("hidden")
-            form_validation.classList.add("hidden")
         })
-        
     })
 }
 

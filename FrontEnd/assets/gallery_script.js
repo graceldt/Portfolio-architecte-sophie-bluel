@@ -1,58 +1,32 @@
-const displayWorks = () =>{
-    /*
-        Cette fonction permet de récupérer les travaux depuis le back-end, 
-        créer la galerie dynamique, rajouter au menu-categories-list un 
-        évènement au click afin de filtrer la galerie
-    */
+async function GetWorks() {
+    //Cette fonction permet de récupérer  via l'api ,les travaux  sauvegarder dans le back-end.
+    const reponse = await fetch("http://localhost:5678/api/works");
+    return await reponse.json();
+}
 
+async function GetCategories() {
+    //Cette fonction permet de récupérer  via l'api ,les catégories  sauvegarder dans le back-end.
 
-    fetch("http://localhost:5678/api/works")
-    .then((response) => {
-        return response.json()
-    })
-    .then(works => {
-        createWork(works)
-        const category_list = document.querySelector('.menu-categories-list')
-        
-        category_list.addEventListener("click", function(event){
-            
-            let current_li = event.target.closest("li")
-            if (current_li === null) return;
-    
-            let element_select = document.querySelector('.menu-categories-list .category_active');
-            element_select.className=""
-            current_li.className = "category_active"
-            
-            createWork(works, event.target.textContent)
-        })
-    
-        GalleryToEdit(works) // Fonction de la modale galerie photo 
-    })
+    const reponse = await fetch("http://localhost:5678/api/categories");
+    return await reponse.json();
 }
 
 
-function createWork(works, work_filter="Tous") {
+function create_work(works) {
     /*
-        Cette fonction permet de créer une galerie dynamique et 
-        de filter l'affichage selon la catégorie du projet 
+        Cette fonction permet de l'affichage de la galerie
     */
     const gallery_div = document.querySelector(".gallery")
     gallery_div.innerHTML = ''
 
-    if (work_filter !== "Tous") {
-        works = works.filter(function (work) {
-            return work.category.name === work_filter
-        });
-    }
-
-    // cette boucle permet d'afficher les travaux selon leur catégorie 
+    
     for (let index = 0; index < works.length; index++){
         const gallery = works[index] 
-        CreateFigure(gallery_div, gallery)
+        create_figure(gallery_div, gallery)
     }
 }
 
-function CreateFigure(gallery_div, gallery){
+function create_figure(gallery_div, gallery){
     // création et ajout de la balise figure dans l'élément parent gallery
     const figure_img = document.createElement('figure') 
     gallery_div.appendChild(figure_img)
@@ -68,37 +42,65 @@ function CreateFigure(gallery_div, gallery){
     figure_img.appendChild(captionElement)
 }
 
-const displayCategories = () =>{
+function work_filter(works){
     /*
-        Cette fonction permet de récupérer les catégories des 
-        travaux depuis le back end, créer les boutons et les options 
+        Cette fonction permet le filtrage du portfolio selon les catégories des travaux.
     */
-    fetch("http://localhost:5678/api/categories")
-    .then((response) => { 
-        return response.json()
-    })
-    .then(categories => {
-        createButton(categories)
-        createOption(categories) // Fonction de la modale ajout photo 
+    const category_list = document.querySelectorAll('.menu-categories-list li')
+    category_list.forEach((category) => {
+        category.addEventListener("click", function(event){
+            let new_works = works
+
+            let element_select = document.querySelector('.menu-categories-list .category_active');
+            element_select.className=""
+            category.className = "category_active"
+            
+            if (event.target.textContent !== "Tous") {
+                new_works = works.filter(function (work) {
+                    return work.category.name === event.target.textContent
+                });
+            }
+            create_work(new_works)
+        })
     })
 }
 
-function createButton(categories){
+
+function create_filter_buttons(categories){
     /*
-        Cette fonction rajoute au menu-categories-list la liste des catégories
+        Cette fonction permet de créer la liste des boutons des catégories  
     */
     const menu_category = document.querySelector('.menu-categories-list')
-    let html = `<li class="category category_active">Tous</li>`
+    const li_tag = document.createElement('li')
+    li_tag.className = "category category_active"
+    li_tag.textContent = "Tous"
+    menu_category.appendChild(li_tag)
     
     for (let index = 0; index < categories.length; index++){
         const category = categories[index]
-        html += `<li class="category">${category.name}</li>`
+        const li_tag = document.createElement('li')
+        li_tag.className = "category"
+        li_tag.textContent = category.name
+        menu_category.appendChild(li_tag)
     }
-
-    menu_category.innerHTML = html
 }
 
 
-displayWorks()
-displayCategories()
+const display_works = () => {
+    /*
+        Cette fonction d'iniatiliser la galerie photo, le système de filtre et la modale 
+    */
+    Promise.all([GetWorks(), GetCategories()])
+    .then(([works, categories]) => {
+        create_filter_buttons(categories) // creation categories
+        create_form_option(categories) // remplissages des options dans la modale
+    
+        create_work(works) // affichage des travaux 
+        modal_gallery(works) // affichage des travaux dans la modale 
+        work_filter(works) // ajout d'une fonction de filtre
+    })
+    
+}
 
+
+display_works()

@@ -1,5 +1,5 @@
 function changeUserConnection() {
-     /*
+    /*
         Cette fonction permet  de cacher le login et les boutons 
         de filtres des catégories, et de faire apparaitre le logout dans le menu
         et un bouton modifier 
@@ -9,6 +9,8 @@ function changeUserConnection() {
     const logout = document.getElementById("logout")
     const buttonModify = document.getElementById("modify_button")
     const categories = document.getElementById("categories")
+    const editMode = document.getElementById("edit_mode")
+    
 
 
 
@@ -16,11 +18,13 @@ function changeUserConnection() {
     if (user !== null) {
         logout.classList.remove("hidden")
         login.classList.add("hidden")
+        editMode.classList.remove("hidden")
         buttonModify.classList.remove('hidden')
         categories.classList.add('hidden')
     } else {
         logout.classList.add("hidden")
         login.classList.remove("hidden")
+        editMode.classList.add("hidden")
         buttonModify.classList.add('hidden')
         categories.classList.remove('hidden')
     }
